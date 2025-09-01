@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 // controllers/analyticsController.js
+=======
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 const pool = require('../config/db');
 
 exports.getAnalytics = async (req, res) => {
   try {
+<<<<<<< HEAD
     const userHospitalId = req.user.hospital_id;
     const userClinicId = req.user.clinic_id;
     const isSuperAdmin = req.user.is_super_admin;
@@ -292,5 +296,17 @@ exports.getAnalyticsByFacility = async (req, res) => {
   } catch (err) {
     console.error('Facility analytics query error:', err);
     res.status(500).json({ error: 'Failed to fetch facility analytics', details: err.message });
+=======
+    const appointments = await pool.query('SELECT COUNT(*) FROM appointments WHERE status = $1', ['confirmed']);
+    const revenue = await pool.query('SELECT SUM(amount) as total FROM billing WHERE status = $1', ['paid']);
+    const demographics = await pool.query('SELECT role, COUNT(*) as count FROM users GROUP BY role');
+    res.json({
+      appointments: appointments.rows[0].count,
+      revenue: revenue.rows[0].total || 0,
+      demographics: demographics.rows
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
   }
 };

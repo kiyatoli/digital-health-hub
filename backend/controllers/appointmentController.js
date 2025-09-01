@@ -51,6 +51,7 @@ exports.getQueue = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+<<<<<<< HEAD
 };
 // In appointmentController.js
 exports.createAppointment = async (req, res) => {
@@ -69,4 +70,6 @@ exports.createAppointment = async (req, res) => {
     console.error('Failed to create appointment:', err);
     res.status(500).json({ error: 'Failed to create appointment', details: err.message });
   }
+=======
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 };

@@ -26,6 +26,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+<<<<<<< HEAD
   // Single redirectToDashboard function
   const redirectToDashboard = (role) => {
     switch (role) {
@@ -49,13 +50,19 @@ const Login = () => {
     }
   };
 
+=======
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
+<<<<<<< HEAD
       // First try to login as user (staff/doctor/admin/pharmacist/lab_staff)
+=======
+      // First try to login as user (staff/doctor/admin)
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
       const userResponse = await axios.post('http://localhost:5000/api/auth/login', {
         email: formData.email,
         password: formData.password
@@ -69,7 +76,10 @@ const Login = () => {
         localStorage.setItem('token', userResponse.data.token);
         localStorage.setItem('role', userResponse.data.role);
         localStorage.setItem('userId', userResponse.data.userId);
+<<<<<<< HEAD
         localStorage.setItem('username', userResponse.data.username);
+=======
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
         redirectToDashboard(userResponse.data.role);
       }
 
@@ -84,7 +94,11 @@ const Login = () => {
         if (patientResponse.data.requiresMFA) {
           setShowOtp(true);
           setUserId(patientResponse.data.userId);
+<<<<<<< HEAD
           setUserRole('patient');
+=======
+          setUserRole('patient'); // Patients always have 'patient' role
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
         } else {
           localStorage.setItem('token', patientResponse.data.token);
           localStorage.setItem('role', 'patient');
@@ -138,6 +152,32 @@ const Login = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  // In your handleLogin function, update the redirection:
+const redirectToDashboard = (role) => {
+  switch (role) {
+    case 'admin':
+      window.location.href = '/admin-dashboard';
+      break;
+    case 'doctor':
+      window.location.href = '/doctor-dashboard';
+      break;
+    case 'pharmacist':
+      window.location.href = '/pharmacist-dashboard';
+      break;
+    case 'lab_staff':
+      window.location.href = '/lab-dashboard';
+      break;
+    case 'patient':
+      window.location.href = '/patient-dashboard';
+      break;
+    default:
+      window.location.href = '/dashboard';
+  }
+};
+
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');

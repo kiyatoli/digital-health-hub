@@ -8,12 +8,20 @@ const jwt = require('jsonwebtoken');
 
 dotenv.config();
 const app = express();
+<<<<<<< HEAD
 
 // Middleware
+=======
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 app.use(express.json());
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+<<<<<<< HEAD
+=======
+// ... keep the imports and setup code ...
+
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 // PostgreSQL connection
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -23,6 +31,7 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+<<<<<<< HEAD
 console.log('Database config:', {
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -44,11 +53,14 @@ app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/admin/analytics', analyticsRoutes);
 
+=======
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 // Test route to verify server works
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Server is working!' });
 });
 
+<<<<<<< HEAD
 // Debug endpoint to check users
 app.get('/api/debug/users', async (req, res) => {
   try {
@@ -67,6 +79,20 @@ app.get('/api/debug/users', async (req, res) => {
 });
 
 // Create test users endpoint
+=======
+// ===== DEBUG ENDPOINTS =====
+app.get('/api/debug/users', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, username, email, role FROM users');
+    console.log('Users in database:', result.rows);
+    res.json({ users: result.rows });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'Database error', details: error.message });
+  }
+});
+
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 app.get('/api/debug/create-test-users', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash('password123', 10);
@@ -90,10 +116,18 @@ app.get('/api/debug/create-test-users', async (req, res) => {
         
         results.push(result.rows[0]);
       } catch (insertError) {
+<<<<<<< HEAD
         if (insertError.code === '23505') {
           results.push({ email: user.email, status: 'already_exists', error: insertError.message });
         } else {
           results.push({ email: user.email, status: 'error', error: insertError.message });
+=======
+        if (insertError.code === '23505') { // Unique violation - user already exists
+          console.log('User already exists:', user.email);
+          results.push({ email: user.email, status: 'already_exists' });
+        } else {
+          throw insertError;
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
         }
       }
     }
@@ -109,10 +143,18 @@ app.get('/api/debug/create-test-users', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 // server.js
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   console.log('Login attempt for:', email);
+=======
+// ===== AUTH ROUTES =====
+// Staff/User Login Route
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  console.log('Login attempt:', { email });
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 
   if (!email || !password) {
     return res.status(400).json({ message: 'Email and password are required' });
@@ -120,7 +162,11 @@ app.post('/api/auth/login', async (req, res) => {
 
   try {
     const userResult = await pool.query(
+<<<<<<< HEAD
       'SELECT id, username, email, role, password_hash, hospital_id, clinic_id, is_super_admin FROM users WHERE email = $1',
+=======
+      'SELECT id, username, email, role, password_hash FROM users WHERE email = $1', 
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
       [email]
     );
     
@@ -143,6 +189,7 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+<<<<<<< HEAD
     console.log('Login successful for user:', user.email, 'Role:', user.role);
 
     const token = jwt.sign(
@@ -156,6 +203,18 @@ app.post('/api/auth/login', async (req, res) => {
         is_super_admin: user.is_super_admin || false
       },
       process.env.JWT_SECRET || 'your_secret_key',
+=======
+    console.log('Login successful for user:', user.email);
+
+    const token = jwt.sign(
+      { 
+        userId: user.id, 
+        username: user.username,
+        role: user.role, 
+        email: user.email 
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
       { expiresIn: '24h' }
     );
 
@@ -164,16 +223,23 @@ app.post('/api/auth/login', async (req, res) => {
       userId: user.id,
       username: user.username,
       role: user.role,
+<<<<<<< HEAD
       hospital_id: user.hospital_id || 0,
       clinic_id: user.clinic_id || 0,
       is_super_admin: user.is_super_admin || false,
       requiresMFA: false
     });
+=======
+      requiresMFA: false
+    });
+
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Server error during login' });
   }
 });
+<<<<<<< HEAD
 // Add this to your server.js for debugging
 app.get('/api/debug/check-auth', async (req, res) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -386,3 +452,10 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+=======
+
+// ... keep the patient login and other routes ...
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));RT}`));
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522

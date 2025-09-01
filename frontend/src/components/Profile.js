@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Profile.js
 import React, { useState, useEffect } from 'react';
 import { 
@@ -39,11 +40,36 @@ const Profile = ({ user, setUser }) => {
       });
     }
   }, [user]);
+=======
+import React, { useState, useEffect } from 'react';
+import { Button, TextField, Box, Typography, Card, Alert } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import api from '../services/api';
+
+const Profile = () => {
+  const { t } = useTranslation();
+  const [form, setForm] = useState({ username: '', email: '', phone: '', password: '' });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get('/auth/me');
+        setForm({ username: res.data.username, email: res.data.email, phone: res.data.phone || '', password: '' });
+      } catch (err) {
+        setError(t('error'));
+      }
+    };
+    fetchProfile();
+  }, [t]);
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+<<<<<<< HEAD
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -71,10 +97,22 @@ const Profile = ({ user, setUser }) => {
       setError(err.response?.data?.message || 'Failed to update profile');
     } finally {
       setLoading(false);
+=======
+  const handleSubmit = async () => {
+    try {
+      setError('');
+      setSuccess('');
+      // Assume backend has a /auth/update endpoint (add it if needed)
+      await api.put('/auth/update', form);
+      setSuccess('Profile updated successfully');
+    } catch (err) {
+      setError(t('error'));
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
     }
   };
 
   return (
+<<<<<<< HEAD
     <Card sx={{ p: 4, borderRadius: 2, boxShadow: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
         <Avatar sx={{ width: 64, height: 64, mr: 2, bgcolor: 'primary.main' }}>
@@ -205,6 +243,17 @@ const Profile = ({ user, setUser }) => {
           </Grid>
         </Grid>
       </form>
+=======
+    <Card sx={{ p: 3 }}>
+      <Typography variant="h6" gutterBottom>Edit Profile</Typography>
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+      <TextField label={t('username')} name="username" value={form.username} onChange={handleChange} fullWidth margin="normal" />
+      <TextField label={t('email')} name="email" value={form.email} onChange={handleChange} fullWidth margin="normal" />
+      <TextField label={t('phone')} name="phone" value={form.phone} onChange={handleChange} fullWidth margin="normal" />
+      <TextField label="New Password (optional)" name="password" type="password" value={form.password} onChange={handleChange} fullWidth margin="normal" />
+      <Button variant="contained" onClick={handleSubmit} sx={{ mt: 2 }}>Update Profile</Button>
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
     </Card>
   );
 };

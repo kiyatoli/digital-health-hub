@@ -6,25 +6,37 @@ import EMRView from './EMRView';
 import Telemedicine from './Telemedicine';
 import Inventory from './Inventory';
 import Analytics from './Analytics';
+<<<<<<< HEAD
 import Profile from './Profile';
 import UserManagement from './UserManagement';
 import { 
   Box, Drawer, List, ListItem, ListItemText, Typography, Button, Divider,
   AppBar, Toolbar, Container, Card, CardContent, Grid
 } from '@mui/material';
+=======
+import Profile from './Profile';  // New profile component
+import UserManagement from './UserManagement';  // New for admin
+import { Box, Drawer, List, ListItem, ListItemText, Typography, Button, Divider } from '@mui/material';
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
 const Dashboard = () => {
   const { t } = useTranslation();
+<<<<<<< HEAD
   const [user, setUser] = useState(null);
   const [view, setView] = useState('dashboard');
+=======
+  const [role, setRole] = useState('');
+  const [view, setView] = useState('main');  // To switch views (main, profile, user_management)
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
+<<<<<<< HEAD
         const token = localStorage.getItem('token');
         const role = localStorage.getItem('role');
         const username = localStorage.getItem('username');
@@ -42,6 +54,12 @@ const Dashboard = () => {
 
       } catch (err) {
         console.error('Failed to fetch user:', err);
+=======
+        const res = await api.get('/auth/me');
+        setRole(res.data.role);
+      } catch (err) {
+        console.error(err);
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
         navigate('/login');
       }
     };
@@ -50,6 +68,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+<<<<<<< HEAD
     localStorage.removeItem('role');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
@@ -143,10 +162,44 @@ const Dashboard = () => {
       case 'dashboard':
       default:
         return renderDashboardContent();
+=======
+    navigate('/login');
+  };
+
+  const renderContent = () => {
+    if (view === 'profile') return <Profile />;
+    if (view === 'user_management' && role === 'admin') return <UserManagement />;
+
+    switch (role) {
+      case 'patient':
+        return (
+          <>
+            <AppointmentForm />
+            <EMRView />
+            <Telemedicine />
+          </>
+        );
+      case 'doctor':
+        return <EMRView />;
+      case 'admin':
+        return (
+          <>
+            <Analytics />
+            <Inventory />
+          </>
+        );
+      case 'pharmacist':
+        return <Inventory />;
+      case 'lab_staff':
+        return <Typography>Lab Results Management (To be implemented)</Typography>;
+      default:
+        return <Typography>{t('loading')}</Typography>;
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
     }
   };
 
   const menuItems = [
+<<<<<<< HEAD
     { label: 'Dashboard', onClick: () => setView('dashboard') },
     { label: 'Profile', onClick: () => setView('profile') },
     ...(user?.role === 'admin' ? [{ label: 'User Management', onClick: () => setView('user_management') }] : []),
@@ -168,19 +221,38 @@ const Dashboard = () => {
         </Toolbar>
       </AppBar>
 
+=======
+    { label: 'Dashboard', onClick: () => setView('main') },
+    { label: 'Profile', onClick: () => setView('profile') },
+    ...(role === 'admin' ? [{ label: 'User Management', onClick: () => setView('user_management') }] : []),
+    { label: t('logout'), onClick: handleLogout },
+  ];
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
       <Drawer
         sx={{
           width: drawerWidth,
           flexShrink: 0,
+<<<<<<< HEAD
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
             top: '64px' // Below app bar
           },
+=======
+          '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box' },
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
         }}
         variant="permanent"
         anchor="left"
       >
+<<<<<<< HEAD
+=======
+        <Typography variant="h6" sx={{ p: 2 }}>{t('dashboard')}</Typography>
+        <Divider />
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
         <List>
           {menuItems.map((item) => (
             <ListItem button key={item.label} onClick={item.onClick}>
@@ -189,11 +261,17 @@ const Dashboard = () => {
           ))}
         </List>
       </Drawer>
+<<<<<<< HEAD
 
       <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
         <Container maxWidth="lg">
           {renderContent()}
         </Container>
+=======
+      <Box sx={{ flexGrow: 1, p: 3 }}>
+        <Typography variant="h4" gutterBottom>{t('dashboard')}</Typography>
+        {renderContent()}
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
       </Box>
     </Box>
   );

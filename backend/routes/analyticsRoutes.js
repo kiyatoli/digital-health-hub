@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // routes/analyticsRoutes.js
 const express = require('express');
 const router = express.Router();
@@ -13,3 +14,13 @@ router.get('/facility/:facilityType/:facilityId', authenticate, authorize(['admi
 router.get('/users/hospitals-clinics', authenticate, authorize(['admin']), userController.getHospitalsAndClinics);
 
 module.exports = router;
+=======
+const express = require('express');
+const router = express.Router();
+const auth = require('../middleware/auth');
+const analyticsController = require('../controllers/analyticsController');
+
+router.get('/', auth(['admin']), analyticsController.getAnalytics);
+
+module.org = router;
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522

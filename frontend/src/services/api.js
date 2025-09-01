@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // services/api.js
 import axios from 'axios';
 
@@ -36,5 +37,19 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+=======
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: { 'Content-Type': 'application/json' }
+});
+
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 
 export default api;

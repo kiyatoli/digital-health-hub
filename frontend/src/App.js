@@ -6,10 +6,14 @@ import theme from './theme';
 import Home from './components/Home';
 import Login from './components/Login';
 import Registration from './components/Registration';
+<<<<<<< HEAD
 //import TestRegistration from './components/TestRegistration'; // Add this import
 import Dashboard from './components/Dashboard';
 import AdminDashboard from './components/AdminDashboard'; // Changed the import name
 
+=======
+import Dashboard from './components/Dashboard';
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
 import { useTranslation } from 'react-i18next';
 import { AppBar, Toolbar, Typography, Select, MenuItem, FormControl, Box } from '@mui/material';
 
@@ -45,6 +49,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
             <Route path="/dashboard" element={localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/login" />} />
+<<<<<<< HEAD
             {/* Add these routes */}
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/doctor-dashboard" element={<Dashboard />} />
@@ -52,6 +57,8 @@ function App() {
             <Route path="/lab-dashboard" element={<Dashboard />} />
             <Route path="/patient-dashboard" element={<Dashboard />} />
             {/* Add this route */}
+=======
+>>>>>>> eeea500e7c21953c51f8f841cd9d812eaa7d4522
           </Routes>
         </Box>
       </Router>
